@@ -14,6 +14,7 @@ app.use(router);
 
 io.on("connection", socket => {
   socket.on("join", ({ name, room }, callback) => {
+    console.log(room);
     const { error, user } = addUser({ id: socket.id, name, room });
     if (error) return callback(error);
     socket.emit("message", {
@@ -29,6 +30,7 @@ io.on("connection", socket => {
 
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
+    console.log(user);
     io.to(user.room).emit("message", { user: user.room, text: message });
 
     callback();
